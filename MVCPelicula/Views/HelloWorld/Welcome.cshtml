@@ -11,9 +11,11 @@
 <ul>
     @{
         int numVeces = (int)ViewData["numVeces"];
-        for (int i = 0; i < numVeces; i++){
+    
+        for (int i = 1; i <= numVeces; i++){
             
-            <li>@ViewData["nombre"]</li>
+            <li>@ViewData["nombre"] @ViewData["apellido"], veces mostrado = @i</li>
+
         }
     }
 </ul>
