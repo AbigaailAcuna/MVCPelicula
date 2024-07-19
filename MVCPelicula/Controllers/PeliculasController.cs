@@ -19,10 +19,27 @@ namespace MVCPelicula.Controllers
         }
 
         // GET: Peliculas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String textoABuscar)
         {
-            var peliculasDBContext = _context.Peliculas.Include(p => p.Genero);
-            return View(await peliculasDBContext.ToListAsync());
+            if(_context.Peliculas == null)
+            {
+                return Problem("No se ha inicializado el contexto");
+            }
+            var peliculas = from p in _context.Peliculas
+                            select p;
+            if(!String.IsNullOrEmpty(textoABuscar))
+            {
+                peliculas = peliculas.Where(p => p.Titulo.Contains(textoABuscar));
+            }
+            // var peliculasDBContext = _context.Peliculas.Include(p => p.Genero);
+            // return View(await peliculasDBContext.ToListAsync());
+            return View(await peliculas.ToListAsync());
+        }
+
+        [HttpPost]
+        public string Index(string textoABuscar, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + textoABuscar;
         }
 
         // GET: Peliculas/Details/5
